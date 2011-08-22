@@ -20,9 +20,9 @@ def given_a_web_browser(step):
 @step(u'When I visit the "(.*)" page')
 def when_i_visit_the_page(step, page_name):
     with capture_queries_executed as context:
-        world.response = world.browser.get(reverse(page_name))
+        step.scenario.response = world.browser.get(reverse(page_name))
 
-    world.number_of_queries = context.executed
+    step.scenario.number_of_queries = context.executed
 
 from django.db import connection, reset_queries
 from django.core.signals import request_started
