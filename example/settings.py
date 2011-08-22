@@ -48,3 +48,19 @@ INSTALLED_APPS = (
     'lettuce.django',
     'debug_toolbar',
 )
+
+try:
+    import django_jenkins
+    PROJECT_APPS = [app for app in INSTALLED_APPS if not app.startswith('django.contrib')]
+
+    INSTALLED_APPS = INSTALLED_APPS + ('django_jenkins',)
+    JENKINS_TASKS = (
+        'django_jenkins.tasks.django_tests',
+        'django_jenkins.tasks.run_pylint',
+        'django_jenkins.tasks.run_pep8',
+#        'django_jenkins.tasks.run_pyflakes',
+        'django_jenkins.tasks.with_coverage',
+    )
+
+except ImportError:
+    pass

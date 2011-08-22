@@ -13,6 +13,9 @@ TEST_REQUIREMENTS = [
     'mock',
     'lettuce',
     'django-debug-toolbar',
+    'django-jenkins',
+    'pep8',
+    'pyflakes',
 ]
 
 def do_setup():
@@ -41,12 +44,17 @@ def do_setup():
         ],
         cmdclass={
             'install_dev': InstallDependencies,
-            'uninstall_dev': UninstallDependencies,
         }
     )
 
-class PipDependencies(Command):
-    pip_command = ""
+class InstallDependencies(Command):
+    """
+    Command to install both develop dependencies and test dependencies.
+
+    Not sure why we can't find a built in command to do that already
+    in an accessible way.
+    """
+
     user_options = []
 
     def initialize_options(self):
@@ -55,22 +63,17 @@ class PipDependencies(Command):
     def finalize_options(self):
         pass
 
-    def get_all_dependencies(self):
+    def get_test_dependencies(self):
         """
         replace all > or < in the dependencies so the system does not
         try to redirect stdin or stdout from/to a file.
         """
-        command_line_deps = ' '.join(REQUIREMENTS + TEST_REQUIREMENTS)
+        command_line_deps = ' '.join(TEST_REQUIREMENTS)
         return re.sub(re.compile(r'([<>])'), r'\\\1', command_line_deps)
 
     def run(self):
-        os.system("pip %s %s" % (self.pip_command, self.get_all_dependencies()))
-
-class InstallDependencies(PipDependencies):
-    pip_command = 'install'
-
-class UninstallDependencies(PipDependencies):
-    pip_command = 'uninstall'
+        os.system("pip install ./")
+        os.system("pip install %s" % self.get_test_dependencies())
 
 if __name__ == '__main__':
     do_setup()
