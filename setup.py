@@ -3,24 +3,26 @@ from distutils.core import Command, setup
 import os
 import re
 
-from new_app import VERSION
+from django_forms_ext import VERSION
 
 REQUIREMENTS = [
     'django',
 ]
 
-TEST_REQUIREMENTS = []
-
+TEST_REQUIREMENTS = [
+    'mock',
+    'lettuce',
+    'django-debug-toolbar',
+]
 
 def do_setup():
     setup(
-        name="django-new_app",
+        name="django-forms-ext",
         version=VERSION,
-        author="Author Name",
-        author_email="author_email",
-        description="Description for new_app.",
+        author="Aaron Madison & Matthew J. Morrison",
+        description="Extensions for Django's Forms.",
         long_description=open('README.txt', 'r').read(),
-        url="http://www.example.com",
+        url="http://github.com/imtapps/django-forms-ext",
         packages=find_packages(exclude=["example"]),
         install_requires=REQUIREMENTS,
         tests_require=TEST_REQUIREMENTS,
@@ -42,7 +44,6 @@ def do_setup():
             'uninstall_dev': UninstallDependencies,
         }
     )
-
 
 class PipDependencies(Command):
     pip_command = ""

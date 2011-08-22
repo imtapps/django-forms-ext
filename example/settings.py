@@ -27,6 +27,14 @@ TEMPLATE_DIRS = (
     abspath(join(parent, 'templates')),
 )
 
+MIDDLEWARE_CLASSES = (
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+)
+
+INTERNAL_IPS = ('127.0.0.1',)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -35,5 +43,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'sample',
-    'new_app',
+    'django_forms_ext',
+
+    'lettuce.django',
+    'debug_toolbar',
 )
