@@ -3,7 +3,7 @@ from distutils.core import Command, setup
 import os
 import re
 
-from django_forms_ext import VERSION
+from forms_ext import VERSION
 
 REQUIREMENTS = [
     'django',

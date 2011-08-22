@@ -1,7 +1,7 @@
 
 from django import forms
-from django_forms_ext.views.generic import FormSetView
-from django_forms_ext.fields import ForeignKeyChoiceField
+from forms_ext.views.generic import FormSetView
+from forms_ext.fields import ForeignKeyChoiceField
 
 from sample import models
 

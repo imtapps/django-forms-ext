@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'sample',
-    'django_forms_ext',
+    'forms_ext',
 
     'lettuce.django',
     'debug_toolbar',

@@ -3,7 +3,7 @@ import mock
 from django.utils.unittest import TestCase
 from django.core.validators import EMPTY_VALUES
 
-from django_forms_ext.fields import ForeignKeyChoiceField
+from forms_ext.fields import ForeignKeyChoiceField
 
 __all__ = (
     'ForeignKeyChoiceFieldTests',

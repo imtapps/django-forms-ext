@@ -3,7 +3,7 @@ import mock
 from django.utils.unittest import TestCase
 from django.views.generic import CreateView
 
-from django_forms_ext.views.generic import FormSetView
+from forms_ext.views.generic import FormSetView
 
 __all__ = (
     'FormSetViewTests',
@@ -21,32 +21,32 @@ class FormSetViewTests(TestCase):
     def test_set_template_name_suffix_to_formset(self):
         self.assertEqual("_formset", self.view.template_name_suffix)
 
-    @mock.patch('django_forms_ext.views.generic.FormSetView.render_to_response', mock.Mock())
-    @mock.patch('django_forms_ext.views.generic.FormSetView.get_form')
-    @mock.patch('django_forms_ext.views.generic.FormSetView.get_form_class')
+    @mock.patch('forms_ext.views.generic.FormSetView.render_to_response', mock.Mock())
+    @mock.patch('forms_ext.views.generic.FormSetView.get_form')
+    @mock.patch('forms_ext.views.generic.FormSetView.get_form_class')
     def test_send_formset_class_to_get_form(self, get_form_class, get_form):
         self.view.get(mock.Mock())
 
         get_form_class.assert_called_once_with()
         get_form.assert_called_once_with(get_form_class.return_value)
 
-    @mock.patch('django_forms_ext.views.generic.FormSetView.render_to_response', mock.Mock())
-    @mock.patch('django_forms_ext.views.generic.FormSetView.get_form_class', mock.Mock())
-    @mock.patch('django_forms_ext.views.generic.FormSetView.get_form')
-    @mock.patch('django_forms_ext.views.generic.FormSetView.get_context_data')
+    @mock.patch('forms_ext.views.generic.FormSetView.render_to_response', mock.Mock())
+    @mock.patch('forms_ext.views.generic.FormSetView.get_form_class', mock.Mock())
+    @mock.patch('forms_ext.views.generic.FormSetView.get_form')
+    @mock.patch('forms_ext.views.generic.FormSetView.get_context_data')
     def test_send_form_to_context_data_as_formset(self, get_context_data, get_form):
         self.view.get(mock.Mock())
         get_context_data.assert_called_once_with(formset=get_form.return_value)
 
-    @mock.patch('django_forms_ext.views.generic.FormSetView.get_form_class', mock.Mock())
-    @mock.patch('django_forms_ext.views.generic.FormSetView.get_form', mock.Mock())
-    @mock.patch('django_forms_ext.views.generic.FormSetView.render_to_response')
-    @mock.patch('django_forms_ext.views.generic.FormSetView.get_context_data')
+    @mock.patch('forms_ext.views.generic.FormSetView.get_form_class', mock.Mock())
+    @mock.patch('forms_ext.views.generic.FormSetView.get_form', mock.Mock())
+    @mock.patch('forms_ext.views.generic.FormSetView.render_to_response')
+    @mock.patch('forms_ext.views.generic.FormSetView.get_context_data')
     def test_send_context_data_to_render_to_response(self, get_context_data, render_to_response):
         self.view.get(mock.Mock())
         render_to_response.assert_called_once_with(get_context_data.return_value)
 
-    @mock.patch('django_forms_ext.views.generic.FormSetView.get_queryset')
+    @mock.patch('forms_ext.views.generic.FormSetView.get_queryset')
     @mock.patch('django.views.generic.edit.FormMixin.get_form_kwargs')
     def test_send_queryset_with_form_kwargs(self, get_form_kwargs, get_queryset):
         get_form_kwargs.return_value = {'initial': mock.sentinel.initial}
@@ -58,8 +58,8 @@ class FormSetViewTests(TestCase):
             'initial': mock.sentinel.initial,
         }, kwargs)
 
-    @mock.patch('django_forms_ext.views.generic.FormSetView.render_to_response')
-    @mock.patch('django_forms_ext.views.generic.FormSetView.get_context_data')
+    @mock.patch('forms_ext.views.generic.FormSetView.render_to_response')
+    @mock.patch('forms_ext.views.generic.FormSetView.get_context_data')
     def test_render_response_with_formset_when_form_invalid(self, get_context_data, render_to_response):
         formset = mock.Mock()
         response = self.view.form_invalid(formset)
