@@ -42,10 +42,11 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.staticfiles',
 
+    'lettuce.django',
     'sample',
     'forms_ext',
 
-    'lettuce.django',
+
     'debug_toolbar',
 )
 
@@ -58,7 +59,7 @@ try:
         'django_jenkins.tasks.django_tests',
         'django_jenkins.tasks.run_pylint',
         'django_jenkins.tasks.run_pep8',
-#        'django_jenkins.tasks.run_pyflakes',
+        'django_jenkins.tasks.run_pyflakes',
         'django_jenkins.tasks.with_coverage',
     )
 
