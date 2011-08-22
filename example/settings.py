@@ -42,17 +42,16 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.staticfiles',
 
+    'debug_toolbar',
     'lettuce.django',
+
     'sample',
     'forms_ext',
-
-
-    'debug_toolbar',
 )
 
 try:
     import django_jenkins
-    PROJECT_APPS = [app for app in INSTALLED_APPS if not app.startswith('django.contrib')]
+    PROJECT_APPS = ('forms_ext', 'sample')
 
     INSTALLED_APPS = INSTALLED_APPS + ('django_jenkins',)
     JENKINS_TASKS = (
