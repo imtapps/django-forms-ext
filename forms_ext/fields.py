@@ -29,6 +29,8 @@ class CommaSeparatedField(forms.CharField):
     def to_python(self, value):
         if value in EMPTY_VALUES:
             return u''
+        if isinstance(value, (list, tuple)):
+            return value
         return value.split(',')
 
     def prepare_value(self, value):

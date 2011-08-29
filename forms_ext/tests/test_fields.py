@@ -48,60 +48,47 @@ class CSVTestForm(forms.Form):
 class CommaSeparatedFieldTests(TestCase):
 
     def setUp(self):
+        self.field = fields.CommaSeparatedField(max_item_length=3, required=False)
         self.field_input = "abc,123,xyz"
         self.expected_output = ['abc', '123', 'xyz']
 
-    def test_separates_string_on_commas(self):
-        form = CSVTestForm({'csv_field': self.field_input})
-        form.is_valid()
+    def test_to_python_separates_string_on_commas(self):
+        self.assertEqual(['abc', '123'], self.field.to_python('abc,123'))
 
-        self.assertEqual(self.expected_output, form.cleaned_data['csv_field'])
+    def test_to_python_returns_empty_string_when_value_given_is_none(self):
+        self.assertEqual('', self.field.to_python(None))
 
-    def test_returns_empty_string_when_value_given_is_none(self):
-        form = CSVTestForm({'csv_field': None})
-        form.is_valid()
+    def test_to_python_returns_empty_string_when_value_given_is_empty_string(self):
+        self.assertEqual('', self.field.to_python(''))
 
-        self.assertEqual('', form.cleaned_data['csv_field'])
+    def test_to_python_returns_empty_string_when_value_given_is_empty_list(self):
+        self.assertEqual('', self.field.to_python([]))
 
-    def test_returns_empty_string_when_value_given_is_empty_string(self):
-        form = CSVTestForm({'csv_field': ''})
-        form.is_valid()
+    def test_to_python_returns_empty_string_when_value_given_is_empty_tuple(self):
+        self.assertEqual('', self.field.to_python(()))
 
-        self.assertEqual('', form.cleaned_data['csv_field'])
+    def test_to_python_returns_empty_string_when_value_given_is_empty_dict(self):
+        self.assertEqual('', self.field.to_python({}))
 
-    def test_returns_empty_string_when_value_given_is_empty_list(self):
-        form = CSVTestForm({'csv_field': []})
-        form.is_valid()
+    def test_to_python_returns_list_when_list_was_given_as_input(self):
+        expected_value = ['AAA', 'BBB']
+        self.assertEqual(expected_value, self.field.to_python(expected_value))
 
-        self.assertEqual('', form.cleaned_data['csv_field'])
+    def test_to_python_returns_tuple_when_tuple_was_given_as_input(self):
+        expected_value = ('AAA', 'BBB')
+        self.assertEqual(expected_value, self.field.to_python(expected_value))
 
-    def test_returns_empty_string_when_value_given_is_empty_tuple(self):
-        form = CSVTestForm({'csv_field': ()})
-        form.is_valid()
+    def test_prepare_value_turns_list_into_comma_separated_string_for_display(self):
+        self.assertEqual("1,2,3", self.field.prepare_value(['1', '2', '3']))
 
-        self.assertEqual('', form.cleaned_data['csv_field'])
+    def test_prepare_value_ignores_csv_values_for_display_that_evaluate_falsy(self):
+        self.assertEqual("one,two", self.field.prepare_value(['one', None, '', [], (), {}, 'two']))
 
-    def test_returns_empty_string_when_value_given_is_empty_dict(self):
-        form = CSVTestForm({'csv_field': {}})
-        form.is_valid()
+    def test_prepare_value_does_not_join_items_for_display_when_already_string_value(self):
+        self.assertEqual("1,2,3", self.field.prepare_value("1,2,3"))
 
-        self.assertEqual('', form.cleaned_data['csv_field'])
-
-    def test_turns_list_into_comma_separated_string_for_display(self):
-        form = CSVTestForm(initial={'csv_field': ['1', '2', '3']})
-        self.assertEqual("1,2,3", form['csv_field'].value())
-
-    def test_ignores_csv_values_for_display_that_evaluate_falsy(self):
-        form = CSVTestForm(initial={'csv_field': ['one', None, '', [], (), {}, 'two']})
-        self.assertEqual("one,two", form['csv_field'].value())
-
-    def test_does_not_join_items_for_display_when_already_string_value(self):
-        form = CSVTestForm(initial={'csv_field': "one,two"})
-        self.assertEqual("one,two", form['csv_field'].value())
-
-    def test_does_not_join_items_for_display_when_none(self):
-        form = CSVTestForm(initial={'csv_field': None})
-        self.assertEqual(None, form['csv_field'].value())
+    def test_prepare_value_does_not_join_items_for_display_when_none(self):
+        self.assertEqual(None, self.field.prepare_value(None))
 
     def test_validates_max_length_of_each_comma_separated_value(self):
         form = CSVTestForm({'csv_field': 'toolongvalue,anothertoolongvalue'})
