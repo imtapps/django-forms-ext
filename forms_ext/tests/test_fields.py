@@ -38,8 +38,8 @@ class ForeignKeyChoiceFieldTests(TestCase):
         model_class = mock.Mock()
         field = fields.ForeignKeyChoiceField(model_class)
         instance = field.to_python(123)
-        model_class.assert_called_once_with(pk=123)
-        self.assertEqual(model_class.return_value, instance)
+        model_class.objects.get.assert_called_once_with(pk=123)
+        self.assertEqual(model_class.objects.get.return_value, instance)
 
 
 class CSVTestForm(forms.Form):

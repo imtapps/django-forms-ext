@@ -17,7 +17,8 @@ class ForeignKeyChoiceField(forms.ModelChoiceField):
     def to_python(self, value):
         if value in EMPTY_VALUES:
             return None
-        return self.model_class(pk=value)
+        field_name = self.to_field_name or 'pk'
+        return self.model_class.objects.get(**{field_name:value})
 
 class CommaSeparatedField(forms.CharField):
     description = "Comma-separated strings"
