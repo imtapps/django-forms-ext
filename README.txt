@@ -20,6 +20,10 @@ Fields
     Django has a comma separated integer field, but not just strings.
     Stupid, I know... we created one for use with strings
 
+- QuerysetChoiceField
+
+    When you want to build a select box with a queryset but don't want
+    a model instance when saving, use this thing.
 
 Views
 =========

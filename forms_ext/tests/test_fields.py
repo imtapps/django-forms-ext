@@ -10,6 +10,7 @@ from forms_ext import fields
 __all__ = (
     'ForeignKeyChoiceFieldTests',
     'CommaSeparatedFieldTests',
+    'QuerysetChoiceFieldTests',
 )
 
 class ForeignKeyChoiceFieldTests(TestCase):
@@ -93,3 +94,24 @@ class CommaSeparatedFieldTests(TestCase):
     def test_validates_max_length_of_each_comma_separated_value(self):
         form = CSVTestForm({'csv_field': 'toolongvalue,anothertoolongvalue'})
         self.assertFalse(form.is_valid())
+
+class QuerysetChoiceFieldTests(TestCase):
+
+    def setUp(self):
+        self.mock = mock.Mock(spec=fields.QuerysetChoiceField)
+
+    def test_extends_djangos_model_choice_field(self):
+        self.assertTrue(issubclass(fields.QuerysetChoiceField, forms.ModelChoiceField))
+
+    def test_to_python_returns_integer_value(self):
+        result = fields.QuerysetChoiceField.to_python(self.mock, '123')
+        self.assertEqual(123, result)
+
+    def test_to_python_returns_none_when_value_is_none(self):
+        result = fields.QuerysetChoiceField.to_python(self.mock, None)
+        self.assertEqual(None, result)
+
+    def test_to_python_returns_none_when_value_is_invalid(self):
+        result = fields.QuerysetChoiceField.to_python(self.mock, "asdf")
+        self.assertEqual(None, result)
+

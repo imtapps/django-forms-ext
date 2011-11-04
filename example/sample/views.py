@@ -1,7 +1,9 @@
 
 from django import forms
+from django.core.urlresolvers import reverse
+from django.views.generic.edit import CreateView
 from forms_ext.views.generic import FormSetView
-from forms_ext.fields import ForeignKeyChoiceField
+from forms_ext.fields import ForeignKeyChoiceField, QuerysetChoiceField
 
 from sample import models
 
@@ -33,3 +35,14 @@ class SimpleFormsetView(FormSetView):
     model = models.Person
     form_class = forms.models.modelformset_factory(model)
 
+class QuerysetChoiceFieldForm(forms.ModelForm):
+    second_eye_color = QuerysetChoiceField(queryset=models.EyeColor.objects.all())
+
+    class Meta(object):
+        model = models.Person
+
+class QuerysetChoiceFieldView(CreateView):
+    form_class = QuerysetChoiceFieldForm
+    template_name = 'sample/form.html'
+    def get_success_url(self):
+        return reverse('querysetchoice')

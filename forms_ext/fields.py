@@ -1,6 +1,7 @@
 
 from django import forms
 from django.core.validators import EMPTY_VALUES
+from django.forms.models import ModelChoiceField
 
 from forms_ext.validators import EachSequenceItemLengthValidator
 
@@ -38,3 +39,11 @@ class CommaSeparatedField(forms.CharField):
         if isinstance(value, basestring):
             return value
         return value and ','.join(v for v in value if v)
+
+class QuerysetChoiceField(ModelChoiceField):
+
+    def to_python(self, value):
+        try:
+            return int(value)
+        except (ValueError, TypeError):
+            return None
