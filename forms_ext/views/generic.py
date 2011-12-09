@@ -5,7 +5,23 @@ __all__ = (
     'FormSetView',
 )
 
-class FormSetView(CreateView):
+class MessageFormMixin(object):
+    """
+    Mixin to use with Django's generic form views to add
+    a message using the django.contrib.messages app on
+    a successful form post.
+    """
+
+    def form_valid(self, form):
+        response = super(MessageFormMixin, self).form_valid(form)
+        messages.info(self.request, self.get_success_message())
+        return response
+
+    def get_success_message(self):
+        return "Changes saved successfully."
+
+
+class FormSetView(MessageFormMixin, CreateView):
     """
     A view that processes formsets instead of forms.
 
@@ -33,11 +49,6 @@ class FormSetView(CreateView):
         kwargs = FormMixin.get_form_kwargs(self)
         kwargs.update({'queryset': self.get_queryset()})
         return kwargs
-
-    def form_valid(self, formset):
-        formset.save()
-        messages.info(self.request, "%s have been updated successfully." % self.model._meta.verbose_name_plural)
-        return FormMixin.form_valid(self, formset)
 
     def form_invalid(self, formset):
         return self.render_to_response(self.get_context_data(formset=formset))

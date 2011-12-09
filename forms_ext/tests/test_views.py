@@ -3,11 +3,41 @@ import mock
 from django.utils.unittest import TestCase
 from django.views.generic import CreateView
 
-from forms_ext.views.generic import FormSetView
+from forms_ext.views.generic import FormSetView, MessageFormMixin
 
 __all__ = (
+    'MessageFormMixinTests',
     'FormSetViewTests',
 )
+
+class TestView(object):
+
+    def form_valid(self, form):
+        return "expected_response"
+
+class MessageTestView(MessageFormMixin, TestView):
+    request = mock.Mock()
+
+class MessageFormMixinTests(TestCase):
+    """
+    Just testing mechanics...
+    """
+
+    def test_form_valid_returns_super_form_valid(self):
+        form = mock.Mock()
+
+        mv = MessageTestView()
+        response = mv.form_valid(form)
+        self.assertEqual("expected_response", response)
+
+    @mock.patch.object(MessageFormMixin, 'get_success_message')
+    @mock.patch('django.contrib.messages.info')
+    def test_form_valid_adds_message(self, info, get_message):
+        mv = MessageTestView()
+
+        mv.form_valid(mock.Mock())
+        info.assert_called_once_with(mv.request, get_message.return_value)
+
 
 class FormSetViewTests(TestCase):
 
