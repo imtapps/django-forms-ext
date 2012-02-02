@@ -1,8 +1,12 @@
+
 from django.contrib import messages
+from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.edit import CreateView, FormMixin
 
 __all__ = (
+    'MessageFormMixin',
     'FormSetView',
+    'SearchFormView',
 )
 
 class MessageFormMixin(object):
@@ -20,6 +24,9 @@ class MessageFormMixin(object):
     def get_success_message(self):
         return "Changes saved successfully."
 
+
+# todo: someday make 'MessageViews' available for FormView, CreateView, UpdateView, and DeleteView
+# todo: also make the MessageFormMixin have a 'add_message' method so it is easy to override message type.
 
 class FormSetView(MessageFormMixin, CreateView):
     """
@@ -52,3 +59,30 @@ class FormSetView(MessageFormMixin, CreateView):
 
     def form_invalid(self, formset):
         return self.render_to_response(self.get_context_data(formset=formset))
+
+
+class SearchFormView(TemplateResponseMixin, FormMixin, View):
+    """
+    Search form executes real action using form's GET data.
+
+    To make the view useful, generally you'll override the
+    form_valid method to execute your search and return the results
+    in a template.
+    """
+
+    def get(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def get_form_kwargs(self):
+        """
+        Returns the keyword arguments for instantiating the form.
+        """
+        return {
+            'initial': self.get_initial(),
+            'data': self.request.GET or None,
+        }
