@@ -12,8 +12,9 @@ REQUIREMENTS = [
 TEST_REQUIREMENTS = [
     'mock',
     'lettuce',
+    'django-nose',
+    'nosexcover',
     'django-debug-toolbar',
-    'django-jenkins',
     'pep8',
     'pyflakes',
 ]
