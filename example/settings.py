@@ -18,6 +18,8 @@ DATABASES = {
     }
 }
 
+SECRET_KEY = 'abcahfdkafdaksfdj93243'
+
 STATIC_URL = '/static/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
