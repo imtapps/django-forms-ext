@@ -95,6 +95,8 @@ class USSocialSecurityNumberField(Field):
         return self._get_formatted_ssn(ssn_parts)
 
     def _is_invalid_ssn(self, ssn_parts):
+        if self._is_lexis_nexis_test_ssn(**ssn_parts):
+            return False
         return any([
             self._has_zero_blocks(**ssn_parts),
             self._is_invalid_area(ssn_parts['area']),
@@ -134,3 +136,7 @@ class USSocialSecurityNumberField(Field):
             bool(area == '078' and group == '05' and serial == '1120'),
             bool(area == '219' and group == '09' and serial == '9999'),
         ])
+
+    def _is_lexis_nexis_test_ssn(self, area, group, serial):
+        return "{0}{1}{2}".format(area, group, serial) in ("666174507", "666042822", "666162153", "666080517",
+                                                           "666121620", "666650511", "666020151")

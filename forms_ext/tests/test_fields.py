@@ -163,6 +163,21 @@ class USSocialSecurityFieldTests(TestCase):
         with self.assertRaises(ValidationError):
             self.field.clean("666-12-1234")
 
+    def _clean_ssn_and_verify_no_exeption(self, ssn):
+        try:
+            self.field.clean(ssn)
+        except ValidationError:
+            self.fail("Unexpected ValidationError on SSN {0}".format(ssn))
+
+    def test_invalid_lexis_nexis_numbers_are_allowed(self):
+        self._clean_ssn_and_verify_no_exeption("666-17-4507")
+        self._clean_ssn_and_verify_no_exeption("666-04-2822")
+        self._clean_ssn_and_verify_no_exeption("666-16-2153")
+        self._clean_ssn_and_verify_no_exeption("666-08-0517")
+        self._clean_ssn_and_verify_no_exeption("666-12-1620")
+        self._clean_ssn_and_verify_no_exeption("666-65-0511")
+        self._clean_ssn_and_verify_no_exeption("666-02-0151")
+
     def test_is_not_valid_when_in_promotional_range(self):
         # 987-65-(4320 - 4329) is invalid
         for x in range(4320, 4330):
