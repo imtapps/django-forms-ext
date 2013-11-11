@@ -6,7 +6,7 @@ import re
 from forms_ext import VERSION
 
 REQUIREMENTS = [
-    'django',
+    'django<1.6',
 ]
 
 TEST_REQUIREMENTS = [
