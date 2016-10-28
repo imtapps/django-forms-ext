@@ -1,15 +1,11 @@
 import mock
 
 from django import test
+from django.http import HttpRequest
 from django.views.generic import CreateView
 
 from forms_ext.views.generic import FormSetView, MessageFormMixin, SearchFormView
 
-__all__ = (
-    'MessageFormMixinTests',
-    'FormSetViewTests',
-    'SearchFormViewTests',
-)
 
 class TestView(object):
 
@@ -18,7 +14,7 @@ class TestView(object):
 
 
 class MessageTestView(MessageFormMixin, TestView):
-    request = mock.Mock()
+    request = HttpRequest()
 
 
 class MessageFormMixinTests(test.TestCase):
@@ -26,7 +22,8 @@ class MessageFormMixinTests(test.TestCase):
     Just testing mechanics...
     """
 
-    def test_form_valid_returns_super_form_valid(self):
+    @mock.patch('django.contrib.messages.api.add_message')
+    def test_form_valid_returns_super_form_valid(self, add_message):
         form = mock.Mock()
 
         mv = MessageTestView()

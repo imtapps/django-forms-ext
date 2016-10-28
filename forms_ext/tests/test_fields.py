@@ -1,4 +1,3 @@
-
 import mock
 
 from django import forms
@@ -8,12 +7,6 @@ from django.utils.unittest import TestCase
 
 from forms_ext import fields
 
-__all__ = (
-    'ForeignKeyChoiceFieldTests',
-    'CommaSeparatedFieldTests',
-    'QuerysetChoiceFieldTests',
-    'USSocialSecurityFieldTests',
-)
 
 class ForeignKeyChoiceFieldTests(TestCase):
 
@@ -47,6 +40,7 @@ class ForeignKeyChoiceFieldTests(TestCase):
 
 class CSVTestForm(forms.Form):
     csv_field = fields.CommaSeparatedField(max_item_length=3, required=False)
+
 
 class CommaSeparatedFieldTests(TestCase):
 
@@ -97,6 +91,7 @@ class CommaSeparatedFieldTests(TestCase):
         form = CSVTestForm({'csv_field': 'toolongvalue,anothertoolongvalue'})
         self.assertFalse(form.is_valid())
 
+
 class QuerysetChoiceFieldTests(TestCase):
 
     def setUp(self):
@@ -116,6 +111,7 @@ class QuerysetChoiceFieldTests(TestCase):
     def test_to_python_returns_none_when_value_is_invalid(self):
         result = fields.QuerysetChoiceField.to_python(self.mock, "asdf")
         self.assertEqual(None, result)
+
 
 class USSocialSecurityFieldTests(TestCase):
 

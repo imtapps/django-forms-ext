@@ -1,7 +1,5 @@
-
 from django.core.validators import MaxLengthValidator
 
-__all__ = ('EachSequenceItemLengthValidator',)
 
 class EachSequenceItemLengthValidator(object):
     message = u'Ensure each item is less than or equal to %(limit_value)s characters.'

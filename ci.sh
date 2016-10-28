@@ -11,22 +11,19 @@ virtualenv $VIRTUALENV_NAME
 . $VIRTUALENV_NAME/bin/activate
 
 find . -name "*.pyc" -delete
+pip install tox flake8
 
-rm -rf jenkins_reports
-mkdir jenkins_reports
-python setup.py install_dev
-python example/manage.py test --with-xunit --with-xcover --cover-package=forms_ext
+rm -rf reports
+mkdir reports
+tox
 TEST_EXIT=$?
-python example/manage.py harvest -a sample -S --verbosity=3 --with-xunit --xunit-file=jenkins_reports/lettuce.xml
-LETTUCE_EXIT=$?
 pep8 forms_ext > jenkins_reports/pep8.report
 PEP8_EXIT=$?
 pyflakes forms_ext > jenkins_reports/pyflakes.report
 PYFLAKES_EXIT=$?
-let JENKINS_EXIT="$TEST_EXIT + $LETTUCE_EXIT + $PEP8_EXIT + $PYFLAKES_EXIT"
+let JENKINS_EXIT="$TEST_EXIT + $PEP8_EXIT + $PYFLAKES_EXIT"
 if [ $JENKINS_EXIT -gt 2 ]; then
     echo "Test exit status:" $TEST_EXIT
-    echo "Lettuce exit status:" $LETTUCE_EXIT
     echo "PEP8 exit status:" $PEP8_EXIT
     echo "Pyflakes exit status:" $PYFLAKES_EXIT
     echo "Exiting Build with status:" $EXIT

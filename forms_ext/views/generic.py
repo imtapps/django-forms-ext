@@ -1,13 +1,7 @@
-
 from django.contrib import messages
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.edit import CreateView, FormMixin
 
-__all__ = (
-    'MessageFormMixin',
-    'FormSetView',
-    'SearchFormView',
-)
 
 class MessageFormMixin(object):
     """
@@ -17,6 +11,9 @@ class MessageFormMixin(object):
     """
 
     def form_valid(self, form):
+        print(type(form))
+        print(form)
+        print(self.request)
         response = super(MessageFormMixin, self).form_valid(form)
         messages.info(self.request, self.get_success_message())
         return response

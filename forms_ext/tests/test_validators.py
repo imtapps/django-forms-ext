@@ -4,9 +4,6 @@ from django.utils.unittest import TestCase
 
 from forms_ext import fields
 
-__all__ = (
-    'EachSequenceItemLengthValidatorTests',
-)
 
 class EachSequenceItemLengthValidatorTests(TestCase):
 

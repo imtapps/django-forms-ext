@@ -1,4 +1,4 @@
-
+import six
 import re
 
 from django import forms
@@ -10,12 +10,9 @@ from django.utils.translation import ugettext_lazy as _
 
 from forms_ext.validators import EachSequenceItemLengthValidator
 
-__all__ = (
-    'ForeignKeyChoiceField',
-)
-
 zeros_re = re.compile('^0+$')
 ssn_re = re.compile(r'^(?P<area>\d{3})[-\ ]?(?P<group>\d{2})[-\ ]?(?P<serial>\d{4})$')
+
 
 class ForeignKeyChoiceField(forms.ModelChoiceField):
 
@@ -27,7 +24,8 @@ class ForeignKeyChoiceField(forms.ModelChoiceField):
         if value in EMPTY_VALUES:
             return None
         field_name = self.to_field_name or 'pk'
-        return self.model_class.objects.get(**{field_name:value})
+        return self.model_class.objects.get(**{field_name: value})
+
 
 class CommaSeparatedField(forms.CharField):
     description = "Comma-separated strings"
@@ -44,9 +42,10 @@ class CommaSeparatedField(forms.CharField):
         return value.split(',')
 
     def prepare_value(self, value):
-        if isinstance(value, basestring):
+        if isinstance(value, six.string_types):
             return value
         return value and ','.join(v for v in value if v)
+
 
 class QuerysetChoiceField(ModelChoiceField):
 
