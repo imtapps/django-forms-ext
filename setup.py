@@ -1,7 +1,5 @@
 from setuptools import find_packages
-from distutils.core import Command, setup
-import os
-import re
+from distutils.core import setup
 
 from forms_ext import VERSION
 
@@ -13,7 +11,7 @@ setup(
     long_description=open('README.txt', 'r').read(),
     url="http://github.com/imtapps/django-forms-ext",
     packages=find_packages(exclude=["example"]),
-    tests_requires=open('requirements/dist.txt').read().split("\n"),
+    install_requires=open('requirements/dist.txt').read().split("\n"),
     tests_requires=open('requirements/dev.txt').read().split("\n"),
     test_suite='runtests.runtests',
     zip_safe=False,
