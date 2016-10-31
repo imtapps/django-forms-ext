@@ -2,10 +2,12 @@ import mock
 
 from django import forms
 from django.core.validators import EMPTY_VALUES
+from django.core.urlresolvers import reverse
 from django.forms import ValidationError
-from django.utils.unittest import TestCase
+from django.test import TestCase
 
 from forms_ext import fields
+from sample.models import Person, EyeColor
 
 
 class ForeignKeyChoiceFieldTests(TestCase):
@@ -111,6 +113,22 @@ class QuerysetChoiceFieldTests(TestCase):
     def test_to_python_returns_none_when_value_is_invalid(self):
         result = fields.QuerysetChoiceField.to_python(self.mock, "asdf")
         self.assertEqual(None, result)
+
+    def test_expect_only_default_queries_each_form_for_foreign_key_values(self):
+        with self.assertNumQueries(11):
+            self.client.get(reverse('many_queries'))
+
+    def test_expect_does_not_query_related_models_for_each_form_in_formset(self):
+        with self.assertNumQueries(2):
+            self.client.get(reverse('few_queries'))
+
+    def test_build_a_select_with_a_queryset_only_saves_the_pk(self):
+        EyeColor.objects.create(name='red')
+        EyeColor.objects.create(name='blue')
+        self.client.post(reverse('querysetchoice'), data={'name': 'alex', 'eye_color': 1, 'second_eye_color': 2})
+        person = Person.objects.get(name='alex')
+        self.assertEqual(person.second_eye_color, 2)
+        self.assertEqual(person.eye_color.pk, 1)
 
 
 class USSocialSecurityFieldTests(TestCase):

@@ -3,6 +3,7 @@ import mock
 from django import test
 from django.http import HttpRequest
 from django.views.generic import CreateView
+from django.core.urlresolvers import reverse
 
 from forms_ext.views.generic import FormSetView, MessageFormMixin, SearchFormView
 
@@ -96,6 +97,10 @@ class FormSetViewTests(test.TestCase):
         get_context_data.assert_called_once_with(formset=formset)
         render_to_response.assert_called_once_with(get_context_data.return_value)
         self.assertEqual(render_to_response.return_value, response)
+
+    def test_the_formset_view_passes_a_formset_into_the_template_context(self):
+        response = self.client.get(reverse('simple'))
+        self.assertIn('formset', response.context)
 
 
 class SearchFormViewTests(test.TestCase):
