@@ -30,7 +30,6 @@ TEMPLATE_DIRS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -45,10 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.staticfiles',
     'django.contrib.messages',
-
-    'debug_toolbar',
     'django_nose',
-
     'sample',
     'forms_ext',
 )

@@ -2,6 +2,3 @@
 mock
 django-nose
 nosexcover
-django-debug-toolbar
-pep8
-pyflakes
