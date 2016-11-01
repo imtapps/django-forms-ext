@@ -25,9 +25,7 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 ROOT_URLCONF = 'urls'
 
-TEMPLATE_DIRS = (
-    abspath(join(parent, 'templates')),
-)
+TEMPLATE_DIRS = (abspath(join(parent, 'templates')), )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -35,7 +33,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-INTERNAL_IPS = ('127.0.0.1',)
+INTERNAL_IPS = ('127.0.0.1', )
 
 INSTALLED_APPS = (
     'django.contrib.auth',

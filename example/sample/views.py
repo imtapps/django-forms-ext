@@ -33,12 +33,12 @@ class FewQueries(FormSetView):
 
 class ManyQueries(FormSetView):
     model = models.Person
-    form_class = forms.models.modelformset_factory(model, extra=10, fields=('eye_color',))
+    form_class = forms.models.modelformset_factory(model, extra=10, fields=('eye_color', ))
 
 
 class SimpleFormsetView(FormSetView):
     model = models.Person
-    form_class = forms.models.modelformset_factory(model, fields=('eye_color',))
+    form_class = forms.models.modelformset_factory(model, fields=('eye_color', ))
 
 
 class QuerysetChoiceFieldForm(forms.ModelForm):

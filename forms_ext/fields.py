@@ -75,9 +75,7 @@ class USSocialSecurityNumberField(Field):
     # remove if it makes its way into the main codebase.
     """
 
-    default_error_messages = {
-        'invalid': _('Enter a valid U.S. Social Security number in XXX-XX-XXXX format.'),
-    }
+    default_error_messages = {'invalid': _('Enter a valid U.S. Social Security number in XXX-XX-XXXX format.'), }
 
     def __init__(self, *args, **kwargs):
         self.no_hyphens = kwargs.pop("no_hyphens", False)
@@ -96,12 +94,14 @@ class USSocialSecurityNumberField(Field):
     def _is_invalid_ssn(self, ssn_parts):
         if self._is_lexis_nexis_test_ssn(**ssn_parts):
             return False
-        return any([
-            self._has_zero_blocks(**ssn_parts),
-            self._is_invalid_area(ssn_parts['area']),
-            self._is_in_promotional_range(**ssn_parts),
-            self._is_known_invalid(**ssn_parts),
-        ])
+        return any(
+            [
+                self._has_zero_blocks(**ssn_parts),
+                self._is_invalid_area(ssn_parts['area']),
+                self._is_in_promotional_range(**ssn_parts),
+                self._is_known_invalid(**ssn_parts),
+            ]
+        )
 
     def _get_formatted_ssn(self, ssn_parts):
         ssn = "{area}-{group}-{serial}".format(**ssn_parts)
@@ -131,11 +131,14 @@ class USSocialSecurityNumberField(Field):
         return bool(area == '987' and group == '65' and 4320 <= int(serial) <= 4329)
 
     def _is_known_invalid(self, area, group, serial):
-        return any([
-            bool(area == '078' and group == '05' and serial == '1120'),
-            bool(area == '219' and group == '09' and serial == '9999'),
-        ])
+        return any(
+            [
+                bool(area == '078' and group == '05' and serial == '1120'),
+                bool(area == '219' and group == '09' and serial == '9999'),
+            ]
+        )
 
     def _is_lexis_nexis_test_ssn(self, area, group, serial):
-        return "{0}{1}{2}".format(area, group, serial) in ("666174507", "666042822", "666162153", "666080517",
-                                                           "666121620", "666650511", "666020151")
+        return "{0}{1}{2}".format(area, group, serial) in (
+            "666174507", "666042822", "666162153", "666080517", "666121620", "666650511", "666020151"
+        )
