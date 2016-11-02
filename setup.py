@@ -1,12 +1,10 @@
 from setuptools import find_packages
 from distutils.core import setup
 
-from forms_ext import VERSION
-
 setup(
     name="django-forms-ext",
-    version=VERSION,
-    author="Aaron Madison & Matthew J. Morrison",
+    version='1.0.0',
+    author="IMT Computer Services",
     description="Extensions for Django's Forms.",
     long_description=open('README.txt', 'r').read(),
     url="http://github.com/imtapps/django-forms-ext",
