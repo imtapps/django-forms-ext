@@ -1,13 +1,7 @@
-
 from django.contrib import messages
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.edit import CreateView, FormMixin
 
-__all__ = (
-    'MessageFormMixin',
-    'FormSetView',
-    'SearchFormView',
-)
 
 class MessageFormMixin(object):
     """
@@ -24,9 +18,9 @@ class MessageFormMixin(object):
     def get_success_message(self):
         return "Changes saved successfully."
 
-
 # todo: someday make 'MessageViews' available for FormView, CreateView, UpdateView, and DeleteView
 # todo: also make the MessageFormMixin have a 'add_message' method so it is easy to override message type.
+
 
 class FormSetView(MessageFormMixin, CreateView):
     """
