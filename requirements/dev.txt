@@ -1,4 +1,4 @@
 -r dist.txt
-mock
-django-nose
-nosexcover
+mock>=1.0.1,<2
+django-nose>=1.4.3,<2
+nosexcover>=1.0.10,<2
