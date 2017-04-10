@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
     name="django-forms-ext",
-    version='1.0.0',
+    version='1.1.0',
     author="IMT Computer Services",
     description="Extensions for Django's Forms.",
     long_description=open('README.txt', 'r').read(),
