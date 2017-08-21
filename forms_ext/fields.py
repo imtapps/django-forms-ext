@@ -75,7 +75,9 @@ class USSocialSecurityNumberField(Field):
     # remove if it makes its way into the main codebase.
     """
 
-    default_error_messages = {'invalid': _('Enter a valid U.S. Social Security number in XXX-XX-XXXX format.'), }
+    default_error_messages = {
+        'invalid': _('Enter a valid U.S. Social Security number in XXX-XX-XXXX format.'),
+    }
 
     def __init__(self, *args, **kwargs):
         self.no_hyphens = kwargs.pop("no_hyphens", False)
@@ -139,6 +141,6 @@ class USSocialSecurityNumberField(Field):
         )
 
     def _is_lexis_nexis_test_ssn(self, area, group, serial):
-        return "{0}{1}{2}".format(area, group, serial) in (
-            "666174507", "666042822", "666162153", "666080517", "666121620", "666650511", "666020151"
-        )
+        return "{0}{1}{2}".format(
+            area, group, serial
+        ) in ("666174507", "666042822", "666162153", "666080517", "666121620", "666650511", "666020151")
