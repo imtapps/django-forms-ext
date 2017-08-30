@@ -28,15 +28,23 @@ ROOT_URLCONF = 'urls'
 TEMPLATE_DIRS = (abspath(join(parent, 'templates')), )
 
 MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware', 'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
 INTERNAL_IPS = ('127.0.0.1', )
 
 INSTALLED_APPS = (
-    'django.contrib.auth', 'django.contrib.contenttypes', 'django.contrib.sessions', 'django.contrib.admin',
-    'django.contrib.staticfiles', 'django.contrib.messages', 'django_nose', 'sample', 'forms_ext',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.admin',
+    'django.contrib.staticfiles',
+    'django.contrib.messages',
+    'django_nose',
+    'sample',
+    'forms_ext',
 )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
